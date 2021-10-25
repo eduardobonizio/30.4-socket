@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link href="./style.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js"></script>
+</head>
+
+<body>
+  <div>
+    <h1 id='currentOffer'>0</h1>
+    <button id='atualizaLance'>Offer</button>
+  </div>
+  <div>
+    <h1 id='currentOffer2'>0</h1>
+    <button id='atualizaLance'>Offer</button>
+  </div>
+  <div>
+    <h1 id='currentOffer3'>0</h1>
+    <button id='atualizaLance'>Offer</button>
+  </div>
+</body>
+
+<script>
+  const socket = io("http://localhost:3001/");
+  const button = document.querySelector('#atualizaLance');
+
+  
+  const updateProductOffer = (product) => {
+    const text = document.querySelector('#currentOffer');
+    text.innerHTML = product.currentOffer
+
+    if(text.innerHTML >= 100) {
+      document.querySelector('#atualizaLance').disabled = true
+    }
+  }
+
+  socket.on('refreshCurrentOffer', (product)=> {
+    updateProductOffer(product)
+  })
+
+  button.addEventListener('click', (e) => {
+    socket.emit('updateCurrentOffer');
+    return false;
+  });
+</script>
+
+</html>

@@ -1,11 +1,8 @@
 const { MongoClient } = require("mongodb");
 
-require("dotenv").config();
+const MONGO_DB_URL = process.env.DB_URL || "mongodb://localhost:27017/Auction";
 
-// eslint-disable-next-line no-undef
-const MONGO_DB_URL = process.env.DB_URL || "mongodb://localhost:27017/Leilao";
-// eslint-disable-next-line no-undef
-const DB_NAME = process.env.DB_NAME || "Leilao";
+const DB_NAME = process.env.DB_NAME || "Auction";
 
 const connection = (URL = MONGO_DB_URL) =>
   MongoClient.connect(URL, {

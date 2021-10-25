@@ -2,23 +2,31 @@ const express = require("express");
 const app = express();
 const http = require('http').createServer(app);
 const cors = require("cors");
+const {getAll, updateCurrentOffer, getById} = require('./models/leilaoConnection')
 
 const PORT = process.env.PORT || 3001;
 
 const io = require('socket.io')(http, {
   cors: {
-    origin: `http://localhost:${PORT}`,
+    origin: `http://127.0.0.1:5500`,
     methods: ['GET', 'POST'], // Métodos aceitos pela url
   }});
 
 io.on('connection', (socket) => {
-  console.log(`Usuário conectado. ID: ${socket.id} `);
+  socket.on('updateCurrentOffer', async ()=>{
+    await updateCurrentOffer()
+
+    const updatedProduct = await getById()
+
+    io.emit('refreshCurrentOffer', updatedProduct)
+  })
 });
 
 
 app.use(express.json());
 
 app.get("/", (_request, response) => {
+  getAll()
   response.status(200).send({ message: "Ok" });
 });
 

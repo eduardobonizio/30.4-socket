@@ -1,17 +1,20 @@
 const express = require("express");
+const app = express();
+const http = require('http').createServer(app);
 const cors = require("cors");
 
 const PORT = process.env.PORT || 3001;
 
-const app = express();
-
-app.use(
-  cors({
+const io = require('socket.io')(http, {
+  cors: {
     origin: `http://localhost:${PORT}`,
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Authorization"],
-  })
-);
+    methods: ['GET', 'POST'], // Métodos aceitos pela url
+  }});
+
+io.on('connection', (socket) => {
+  console.log(`Usuário conectado. ID: ${socket.id} `);
+});
+
 
 app.use(express.json());
 

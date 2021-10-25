@@ -22,6 +22,6 @@ app.get("/", (_request, response) => {
   response.status(200).send({ message: "Ok" });
 });
 
-app.listen(PORT, () => {
+http.listen(PORT, () => {
   console.log(`Online na porta ${PORT}`);
 });
